@@ -29,10 +29,10 @@ final class PhutilAuthAdapterRemoteUser extends PhutilAuthAdapter {
   }
 
   public function getAccountRealName() {
-    return $_SERVER['MELLON_cn'];
+    return $_SERVER['OIDC_CLAIM_name'];
   }
 
   public function getAccountEmail() {
-    return $_SERVER['MELLON_email'];
+    return $_SERVER['OIDC_CLAIM_email'];
   }
 }

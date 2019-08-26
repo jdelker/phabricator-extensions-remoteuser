@@ -6,7 +6,7 @@ final class PhabricatorAuthProviderRemoteUser
   private $adapter;
 
   public function getProviderName() {
-    return pht('Web Server');
+    return pht('SSO Authentication');
   }
 
   public function getDescriptionForCreate() {
