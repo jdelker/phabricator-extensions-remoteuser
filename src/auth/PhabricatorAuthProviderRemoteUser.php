@@ -6,7 +6,7 @@ final class PhabricatorAuthProviderRemoteUser
   private $adapter;
 
   public function getProviderName() {
-    return pht('Web Server');
+    return pht('SSO Authentication');
   }
 
   public function getDescriptionForCreate() {
@@ -75,23 +75,17 @@ final class PhabricatorAuthProviderRemoteUser
     $account = null;
     $response = null;
 
-    try {
-      $account_id = $adapter->getAccountID();
-    } catch (Exception $ex) {
-      // TODO: Handle this in a more user-friendly way.
-      throw $ex;
-    }
-
-    if (!strlen($account_id)) {
+    $identifiers = $adapter->getAccountIdentifiers();
+    if (!$identifiers) {
       $response = $controller->buildProviderErrorResponse(
         $this,
         pht(
           'The web server failed to provide an account ID.'));
-
-      return array($account, $response);
+    } else {
+        $account = $this->newExternalAccountForIdentifiers($identifiers);
     }
 
-    return array($this->loadOrCreateAccount($account_id), $response);
+    return array($account, $response);
   }
 
   public function supportsAutoLogin() {
